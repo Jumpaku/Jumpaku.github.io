@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-height, initial-scale=1">
+  <title>Now Loading ...</title>
+</head>
+
+<body id="tyranode_base" scroll="no" style="margin:0; width=100%; height:100%; overflow:hidden;">
+<script>
+(function() {
+  window.onresize = function() {
+    document.getElementById("tyranode_base").style.height = window.innerHeight + "px";
+  }
+
+  var httpReq = new XMLHttpRequest();
+  httpReq.open("GET", "package.json", true);
+  httpReq.onload = function(){
+    var json = JSON.parse(this.responseText)
+    document.title = json.title;
+
+    if (json.server) {
+      var connect = require('connect');
+      var net = require('net');
+
+      var socket = new net.Socket();
+      socket.on('connect', function() {
+        socket.destroy();
+        console.log('Server running');
+      }).on('error', function(e) {
+        socket.destroy();
+        console.log('Server down');
+        connect.createServer(
+          connect.static('html')
+        ).listen(8080);
+        console.log('Server start');
+      }).connect(8080, 'localhost');
+    }
+    window.onresize();
+  }
+  httpReq.send(null);
+})();
+</script>
+<iframe src="html/index.html" width="100%" height="100%" scrolling="no" frameborder="0">
+</iframe>
+</body>
+</html>

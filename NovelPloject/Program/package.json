@@ -1,0 +1,14 @@
+﻿{
+  "title": "GAME",
+  "name": "tyranode",
+
+  "main": "app://./index.html",
+  "server": false,
+  "window": {
+    "width": 960,
+    "height": 640,
+    "icon": "icon.png",
+    "toolbar": false,
+    "resizable": false
+  }
+}
